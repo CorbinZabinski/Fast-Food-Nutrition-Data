@@ -1,4 +1,4 @@
--- Fast Food Nutrion 
+-- Fast Food Nutrion Data Analysis
 
 /*
 Questions to answer
@@ -14,7 +14,9 @@ DELETE FROM fast_food
 WHERE company LIKE '%Fat"%';
 
 
--- 1. What are the 3 highest calorie food items from each fast food place in the datatset?
+-- 1.
+
+-- What are the 3 highest calorie food items from each fast food place in the datatset?
 
 WITH rnk_cal AS (
 	SELECT company, item, calories, RANK() OVER (PARTITION BY company ORDER BY calories DESC) As calorie_rank
@@ -27,7 +29,10 @@ WHERE calorie_rank <= 3
 ORDER BY company, calories DESC;
 
 
--- 2. What companies use the most trans fats? (For items with trans fat)
+
+-- 2.
+
+-- What companies use the most trans fats? (For items with trans fat)
 
 SELECT Company, AVG(Percent_of_Trans_Fat) AS Percent_Trans_Fat
 FROM(
@@ -39,7 +44,10 @@ GROUP BY company
 ORDER BY Percent_Trans_Fat DESC;
 
 
--- 3a. What items have the most protein per calorie? (In milligrams) -- Omitting insignificant items and drinks
+
+-- 3a. 
+
+--What items have the most protein per calorie? (In milligrams) -- Omitting insignificant items and drinks
 
 SELECT Company, Item, Calories, Protein_g, (protein_g / calories)*1000 AS 'Protein/cal (mg)'
 FROM Fast_food
@@ -52,7 +60,10 @@ AND item NOT LIKE '%mocha%'
 AND item NOT LIKE '%frappe%'
 ORDER BY (protein_g / calories)*1000 DESC;
 
--- 3b. What about burgers and sandwiches specifically?
+
+-- 3b. 
+
+-- What about burgers and sandwiches specifically?
 
 SELECT Company, Item, Calories, Protein_g, (protein_g / calories)*1000 AS 'Protein/cal (mg)'
 FROM Fast_food
@@ -68,7 +79,10 @@ OR item LIKE '% Mac%'
 ORDER BY (protein_g / calories)*1000 DESC;
 
 
--- 4. What items have less calories than their company's average item calories?  (Omitting Sodas and most sauces)
+
+-- 4. 
+
+-- What items have less calories than their company's average item calories?  (Omitting Sodas and most sauces)
 
 WITH AvgCalories AS (
     SELECT company, AVG(calories) AS avg_calories
@@ -86,7 +100,10 @@ WHERE ff1.calories < ac.avg_calories
 ORDER BY company, ff1.calories ASC;
 
 
--- 5. What are the healthiest items? (based on rankings for the UNHEALTHY categories 'Saturated Fat', 'Trans Fat', 'Sodium', 'Sugar' and HEALTHY categories 'Fiber' and 'Protein') -- Omitting some drinks
+
+-- 5. 
+
+-- What are the healthiest items? (based on rankings for the UNHEALTHY categories 'Saturated Fat', 'Trans Fat', 'Sodium', 'Sugar' and HEALTHY categories 'Fiber' and 'Protein') -- Omitting some drinks
 -- Displaying average rank for each item and overall ranking (lower is healthier)
 
 SELECT *, DENSE_RANK() OVER (ORDER BY average_rank) AS Ranking
