@@ -1,6 +1,6 @@
-/*
-Fast Food Nutrion 
+-- Fast Food Nutrion 
 
+/*
 Questions to answer
 1. What are the 3 highest calorie items from each fast food place in the datatset?
 2. What companies use the most trans fats?
@@ -12,7 +12,6 @@ Questions to answer
 -- DELETED first row as it displayed headers as values (Company = Fat")
 DELETE FROM fast_food
 WHERE company LIKE '%Fat"%';
-
 
 
 -- 1. What are the 3 highest calorie food items from each fast food place in the datatset?
@@ -28,7 +27,6 @@ WHERE calorie_rank <= 3
 ORDER BY company, calories DESC;
 
 
-
 -- 2. What companies use the most trans fats? (For items with trans fat)
 
 SELECT Company, AVG(Percent_of_Trans_Fat) AS Percent_Trans_Fat
@@ -39,7 +37,6 @@ FROM(
 ) AS trans_fat_percent
 GROUP BY company
 ORDER BY Percent_Trans_Fat DESC;
-
 
 
 -- 3a. What items have the most protein per calorie? (In milligrams) -- Omitting insignificant items and drinks
@@ -71,7 +68,6 @@ OR item LIKE '% Mac%'
 ORDER BY (protein_g / calories)*1000 DESC;
 
 
-
 -- 4. What items have less calories than their company's average item calories?  (Omitting Sodas and most sauces)
 
 WITH AvgCalories AS (
@@ -88,7 +84,6 @@ WHERE ff1.calories < ac.avg_calories
   AND ff1.total_fat_g > 1
   AND ff1.item NOT LIKE '%sauce%'
 ORDER BY company, ff1.calories ASC;
-
 
 
 -- 5. What are the healthiest items? (based on rankings for the UNHEALTHY categories 'Saturated Fat', 'Trans Fat', 'Sodium', 'Sugar' and HEALTHY categories 'Fiber' and 'Protein') -- Omitting some drinks
